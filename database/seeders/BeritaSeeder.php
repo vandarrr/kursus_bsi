@@ -14,8 +14,9 @@ class BeritaSeeder extends Seeder
     public function run(): void
     {
         Berita::create([
-            'konten' => "Kami dengan bangga mengumumkan penambahan modul baru dalam kursus Menjahit dan Membuat Kue yang akan dimulai bulan depan. Modul ini dirancang untuk meningkatkan keterampilan praktis dan teoritis Anda, dengan fokus pada teknik canggih dan desain terkini. Pengenalan teknologi terbaru dalam kursus Menjahit memberikan kesempatan untuk belajar menggunakan mesin jahit digital yang lebih efisien. Untuk kursus Membuat Kue, kami telah memperbarui resep dan teknik dengan mengikutsertakan metode-metode modern yang lebih berkelanjutan dan efektif.
-                            Jangan lewatkan sesi webinar yang akan kami adakan pada akhir bulan, dimana instruktur kami akan mendemonstrasikan penggunaan peralatan modern di kedua kursus dan menjawab pertanyaan dari peserta. Daftarkan diri Anda sekarang melalui dashboard atau hubungi admin kursus untuk informasi lebih lanjut!"
+            'konten' => "Kami dengan bangga mengumumkan penambahan modul baru dalam Kursus Programmer yang akan dimulai bulan depan. Modul ini mencakup materi terbaru seperti pengembangan web dengan React dan Node.js, aplikasi mobile dengan Kotlin dan Swift, serta dasar-dasar cloud computing.
+                            Jangan lewatkan webinar akhir bulan bersama instruktur kami yang akan mendemonstrasikan teknologi terbaru dan menjawab pertanyaan peserta.
+                                Segera daftar melalui dashboard atau hubungi admin untuk info lebih lanjut!"
         ]);
     }
 }

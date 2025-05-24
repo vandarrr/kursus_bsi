@@ -10,9 +10,9 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Dashboard Admin Kursus - BSI</title>
+    <title>Dashboard User Kursus - BSI</title>
 
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
 
     <link
       href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}"
@@ -28,6 +28,7 @@
   </head>
 
   <body id="page-top">
+    @include('fragment.alert')
     <div id="wrapper">
       <ul
         class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
@@ -50,7 +51,7 @@
 
         <hr class="sidebar-divider" />
 
-        <div class="sidebar-heading">Kontrol</div>
+        <div class="sidebar-heading">Utama</div>
 
         <li class="nav-item">
           <a
@@ -71,10 +72,9 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Kontrol Data Kursus:</h6>
-              <a class="collapse-item" href="{{ route('cybersecurityadmin') }}">Cybersecurity</a>
-              <a class="collapse-item" href="{{ route('uiuxadmin') }}">UI/UX</a>
-              <a class="collapse-item" href="{{ route('laporanadmin') }}">Laporan Pengajuan</a>
+              <h6 class="collapse-header">Daftar Kursus:</h6>
+              <a class="collapse-item" href="{{ route('cybersecurity') }}">Cybersecurity</a>
+              <a class="collapse-item" href="{{ route('uiux') }}">UI/UX</a>
             </div>
           </div>
         </li>
@@ -89,7 +89,7 @@
             aria-controls="collapseUtilities"
           >
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Pengguna</span>
+            <span>Agenda</span>
           </a>
           <div
             id="collapseUtilities"
@@ -98,34 +98,9 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Kontrol Data Pengguna:</h6>
-              <a class="collapse-item" href="{{ route('users') }}">Pengguna</a>
-            </div>
-          </div>
-        </li>
-
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseThree"
-            aria-expanded="true"
-            aria-controls="collapseThree"
-          >
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Jadwal</span>
-          </a>
-          <div
-            id="collapseThree"
-            class="collapse"
-            aria-labelledby="headingTwo"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Kontrol Jadwal Kursus:</h6>
-              <a class="collapse-item" href="{{ route('jadwalcybersecurity') }}">Cybersecurity</a>
-              <a class="collapse-item" href="{{ route('jadwaluiux') }}">UI/UX</a>
+              <h6 class="collapse-header">Agenda Anda:</h6>
+              <a class="collapse-item" href="{{ route('jadwal') }}">Jadwal Dan Status</a>
+              <a class="collapse-item" href="{{ route('laporan') }}">Print Laporan</a>
             </div>
           </div>
         </li>
@@ -203,6 +178,7 @@
                 </div>
               </li>
 
+
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <li class="nav-item dropdown no-arrow">
@@ -227,7 +203,7 @@
                   class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                   aria-labelledby="userDropdown"
                 >
-                  <a class="dropdown-item" href="{{ route('profile-admin') }}">
+                  <a class="dropdown-item" href="{{ route('profile') }}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
@@ -249,60 +225,36 @@
           </nav>
 
           <div class="container-fluid">
-            <h1 class="h3 mb-2 text-gray-800">Data Pengguna</h1>
-        
-            <p class="mb-4">Daftar akun user yang menggunakan website ini</p>
-            
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Daftar Akun Pengguna</h6>
+            <h1 class="h3 mb-2 text-gray-800">Profile</h1>
+
+            <form action="{{ route('ubahProfile') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" value="{{ Auth::user()->email }}" class="form-control" readonly>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Verify Email</th>
-                                    <th>Role</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Verify Email</th>
-                                    <th>Role</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                @foreach ($dataPengguna as $pengguna)
-                                <tr>
-                                    <td>{{ $pengguna['name'] }}</td>
-                                    <td>{{ $pengguna['email'] }}</td>
-                                    <td>{{ $pengguna['email_verified_at'] }}</td>
-                                    <td>{{ $pengguna['role'] }}</td>
-                                    <td>{{ $pengguna['created_at'] }}</td>
-                                    <td>{{ $pengguna['updated_at'] }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="form-group">
+                    <label for="name">Nama Lengkap</label>
+                    <input type="text" id="name" placeholder="full name" name="name" class="form-control" value="{{ Auth::user()->name }}" required>
                 </div>
-            </div>
-        </div>
+                <div class="form-group">
+                    <label for="image">Foto Profile</label>
+                    <input type="file" id="image" name="image" class="form-control-file">
+                    @if(Auth::user()->image)
+                        <img src="{{ Auth::user()->google_id ? Auth::user()->image : asset('images/' . Auth::user()
+                        ->image) }}" alt="Profile image" width="100">
+                    @endif
+                </div>
+                <input type="submit" class="submit-btn" value="Ubah Profile">
+            </form>
+
+          </div>
         </div>
 
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <p>&copy; 2023. <b>Web Kursus</b> Hak Cipta Dilindungi.</p>
+              <p>&copy; 2025. <b>Web Kursus</b> Hak Cipta Dilindungi.</p>
             </div>
           </div>
         </footer>
@@ -365,16 +317,6 @@
 
     <script src="assets/js/demo/chart-area-demo.js"></script>
     <script src="assets/js/demo/chart-pie-demo.js"></script>
-    <script>
-        function confirmAction(action, form) {
-            let message = '';
-            if (action === 'setujui') {
-                message = 'Anda yakin ingin menyetujui pengajuan ini?';
-            } else if (action === 'tolak') {
-                message = 'Anda yakin ingin menolak pengajuan ini?';
-            }
-            return confirm(message);
-        }
-    </script>
+
   </body>
 </html>

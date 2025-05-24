@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -175,15 +176,25 @@ class UserController extends Controller
             'phone' => 'required',
             'alamat' => 'required|string',
             'alasan' => 'required|string',
-            'kursus' => 'required'
+            'kursus' => 'required',
+            'cv' => 'required|mimes:pdf|max:1024'
         ],[
             'name.required' => 'name wajib diisi!',
             'email.required' => 'email wajib diisi!',
             'phone.required' => 'nohp wajib diisi!',
             'alamat.required' => 'alamat wajib diisi!',
             'alasan.required' => 'alasan wajib diisi!',
-            'kursus.required' => 'kursus wajib diisi!'
+            'kursus.required' => 'kursus wajib diisi!',
+            'cv.required' => 'cv wajib diisi',
+            'cv.mimes' => 'cv harus berupa file pdf',
+            'cv.max' => 'cv tidak boleh lebih dari 1mb'
         ]);
+
+        if ($request->hasFile('cv')) {
+            $cv = $request->file('cv');
+            $cvName = time() . '_' . uniqid() . '.' . $cv->getClientOriginalExtension();
+            $cv->move(public_path('documents'), $cvName);
+        }
 
         Kursus::create([
             'name' => $request->name,
@@ -191,7 +202,8 @@ class UserController extends Controller
             'phone' => $request->phone,
             'alamat' => $request->alamat,
             'alasan' => $request->alasan,
-            'kursus' => $request->kursus
+            'kursus' => $request->kursus,
+            'cv' => $cvName
         ]);
 
         $currentWaktu = Carbon::now()->format('F j, Y');
@@ -203,5 +215,41 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('user')->with('success', 'Berhasil mendaftar. Silakan cek pusat peringatan secara berkala!.');
+    }
+    function ubahProfile(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:1048'
+        ]);
+
+        $user = Auth::user();
+        $user->name = $request->name;
+
+        if ($request->hasFile('image')) {
+            if ($user->image && !$user->google_id) {
+                $oldImagePath = public_path('images/' . $user->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            if($user->google_id){
+                $filename = 'images/' . time() . '.' . $request->image->extension();
+            }else{
+                $filename = time() . '.' . $request->image->extension();
+            }
+
+            $request->image->move(public_path('images'), $filename);
+            $user->image = $filename;
+        }
+
+        $user->save();
+
+
+        if($user->role !== 'admin') {
+            return redirect()->route('user')->with('success', 'Profile updated successfully.');
+        }
+
+        return redirect()->route('admin')->with('success', 'Profile updated successfully.');
     }
 }

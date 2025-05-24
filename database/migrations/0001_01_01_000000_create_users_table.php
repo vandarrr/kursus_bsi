@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role',['admin','user'])->default('user');
             $table->rememberToken();
+            $table->string('google_id')->nullable();
+            $table->string('image');
             $table->timestamps();
         });
 

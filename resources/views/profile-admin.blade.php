@@ -10,9 +10,9 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Dashboard Admin Kursus - BSI</title>
+    <title>Dashboard User Kursus - BSI</title>
 
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
 
     <link
       href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}"
@@ -28,6 +28,7 @@
   </head>
 
   <body id="page-top">
+    @include('fragment.alert')
     <div id="wrapper">
       <ul
         class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
@@ -38,15 +39,6 @@
         >
           <div class="sidebar-brand-text mx-3">Web Kursus</div>
         </a>
-
-        <hr class="sidebar-divider my-0" />
-
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ route(Auth::user()->role) }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a
-          >
-        </li>
 
         <hr class="sidebar-divider" />
 
@@ -99,7 +91,7 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Kontrol Data Pengguna:</h6>
-              <a class="collapse-item" href="{{ route('users') }}">Pengguna</a>
+              <a class="collapse-item" href="">Pengguna</a>
             </div>
           </div>
         </li>
@@ -203,6 +195,7 @@
                 </div>
               </li>
 
+
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <li class="nav-item dropdown no-arrow">
@@ -249,60 +242,36 @@
           </nav>
 
           <div class="container-fluid">
-            <h1 class="h3 mb-2 text-gray-800">Data Pengguna</h1>
-        
-            <p class="mb-4">Daftar akun user yang menggunakan website ini</p>
-            
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Daftar Akun Pengguna</h6>
+            <h1 class="h3 mb-2 text-gray-800">Profile</h1>
+
+            <form action="{{ route('ubahProfile') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" value="{{ Auth::user()->email }}" class="form-control" readonly>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Verify Email</th>
-                                    <th>Role</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Verify Email</th>
-                                    <th>Role</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                @foreach ($dataPengguna as $pengguna)
-                                <tr>
-                                    <td>{{ $pengguna['name'] }}</td>
-                                    <td>{{ $pengguna['email'] }}</td>
-                                    <td>{{ $pengguna['email_verified_at'] }}</td>
-                                    <td>{{ $pengguna['role'] }}</td>
-                                    <td>{{ $pengguna['created_at'] }}</td>
-                                    <td>{{ $pengguna['updated_at'] }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="form-group">
+                    <label for="name">Nama Lengkap</label>
+                    <input type="text" id="name" placeholder="full name" name="name" class="form-control" value="{{ Auth::user()->name }}" required>
                 </div>
-            </div>
-        </div>
+                <div class="form-group">
+                    <label for="image">Foto Profile</label>
+                    <input type="file" id="image" name="image" class="form-control-file">
+                    @if(Auth::user()->image)
+                        <img src="{{ Auth::user()->google_id ? Auth::user()->image : asset('images/' . Auth::user()
+                        ->image) }}" alt="Profile image" width="100">
+                    @endif
+                </div>
+                <input type="submit" class="submit-btn" value="Ubah Profile">
+            </form>
+
+          </div>
         </div>
 
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <p>&copy; 2023. <b>Web Kursus</b> Hak Cipta Dilindungi.</p>
+              <p>&copy; 2025. <b>Web Kursus</b> Hak Cipta Dilindungi.</p>
             </div>
           </div>
         </footer>
@@ -365,16 +334,6 @@
 
     <script src="assets/js/demo/chart-area-demo.js"></script>
     <script src="assets/js/demo/chart-pie-demo.js"></script>
-    <script>
-        function confirmAction(action, form) {
-            let message = '';
-            if (action === 'setujui') {
-                message = 'Anda yakin ingin menyetujui pengajuan ini?';
-            } else if (action === 'tolak') {
-                message = 'Anda yakin ingin menolak pengajuan ini?';
-            }
-            return confirm(message);
-        }
-    </script>
+
   </body>
 </html>

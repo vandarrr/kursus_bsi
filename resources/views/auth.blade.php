@@ -34,7 +34,7 @@
             <div class="login-options">
                 <p class="text">Or, login with...</p>
                 <div class="other-logins">
-                    <a href=""><img src="{{ asset('assets/images/google-logo.png') }}" alt=""></a>
+                    <a href="{{ route('google') }}"><img src="{{ asset('assets/images/google-logo.png') }}" alt=""></a>
                     <a href=""><img src="{{ asset('assets/images/facebook-logo.png') }}" alt=""></a>
                     <a href=""><img src="{{ asset('assets/images/apple-logo.png') }}" alt=""></a>
                 </div>
@@ -61,13 +61,13 @@
             <h2>Daftar</h2>
             <div class="login-options">
                 <div class="other-logins">
-                    <a href=""><img src="{{ asset('assets/images/google-logo.png') }}" alt=""></a>
+                    <a href="{{ route('google') }}"><img src="{{ asset('assets/images/google-logo.png') }}" alt=""></a>
                     <a href=""><img src="{{ asset('assets/images/facebook-logo.png') }}" alt=""></a>
                     <a href=""><img src="{{ asset('assets/images/apple-logo.png') }}" alt=""></a>
                 </div>
-                <p class="text">Or, Daftar with email...</p>
+                <p class="text">Or, Sign up with email...</p>
             </div>
-            <form action="{{ route('register') }}" method="POST">
+            <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="field">
                     <i class="uil uil-at"></i>
@@ -76,6 +76,10 @@
                 <div class="field">
                     <i class="uil uil-user"></i>
                     <input type="text" placeholder="Full name" name="name" required>
+                </div>
+                <div class="field">
+                    <i class="uil uil-user"></i>
+                    <input type="file" name="image" required>
                 </div>
                 <div class="field">
                     <i class="uil uil-lock-alt"></i>

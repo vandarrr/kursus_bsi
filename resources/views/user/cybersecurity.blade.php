@@ -246,25 +246,17 @@
                   >
                   <img
                     class="img-profile rounded-circle"
-                    src="{{ asset('assets/images/undraw_profile_2.svg') }}"
+                    src="{{ Auth::user()->google_id ? Auth::user()->image : asset('images/' . Auth::user()->image) }}"
                   />
                 </a>
                 <div
                   class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                   aria-labelledby="userDropdown"
                 >
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item" href="{{ route('profile') }}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                  </a>
+                  </a>>
                   <div class="dropdown-divider"></div>
                   <a
                     class="dropdown-item"
@@ -304,7 +296,8 @@
                             <h6 class="m-0 font-weight-bold text-primary">Formulir Pendaftaran</h6>
                         </div>
                         <div class="card-body">
-                            <form id="registrationForm" action="{{ route('create') }}" method="POST">
+                            <form id="registrationForm" action="{{ route('create') }}" method="POST"
+                            enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="name">Nama Lengkap</label>
@@ -321,6 +314,10 @@
                                 <div class="form-group">
                                     <label for="alamat">Alamat</label>
                                     <textarea class="form-control" name="alamat" id="alamat" rows="3" placeholder="Masukkan alamat seperti: Jl. Margonda Raya No.8, Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16422" style="resize: none;" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cv">Dokumen(.pdf)</label>
+                                    <input type="file" class="form-control" id="cv" name="cv" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="alasan">Alasan Mengikuti Kursus</label>

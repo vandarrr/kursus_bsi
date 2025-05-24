@@ -3,7 +3,11 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,3 +58,36 @@ Route::middleware(['auth'])->group(function(){
 Route::post('logout',[AuthController::class,'logout'])->name('logout');
 
 Route::get('verify/{id}/{hash}',[AuthController::class,'verify'])->name('verification.verify');
+
+Route::get('/auth/google/redirect', function(){
+    return Socialite::driver('google')->redirect();
+})->name('google');
+
+Route::get('/auth/google/callback', function(){
+    $googleUser = Socialite::driver('google')->user();
+
+    $user = User::where('email',$googleUser->getEmail())->first();
+
+    if($user){
+        if(empty($user->image)  || !str_starts_with($user->image,'images/')){
+        $user->image = $googleUser->getAvatar();
+    }
+
+    $user->save();
+    }else {
+        $user = User::create([
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
+            'password' => bcrypt(Str::password(12)),
+            'image' => $googleUser->getAvatar(),
+            'google_id' => $googleUser->getId()
+        ]);
+    }
+
+    Auth::login($user);
+    return redirect()->route('user');
+});
+
+Route::view('/profile','profile-user')->name('profile');
+Route::view('/profile-admin','profile-admin')->name('profile-admin');
+Route::post('/profile',[UserController::class,'ubahProfile'])->name('ubahProfile');

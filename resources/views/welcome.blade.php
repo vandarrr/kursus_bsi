@@ -140,7 +140,17 @@
               <li><a href="#test">Blog</a></li>
               <li><a href="#contact">Kontak</a></li>
               <li><a href="#portfolio">Portfolio</a></li>
-              <li><a href="{{ route('auth') }}">Login</a></li>
+              <li>
+                @if (Auth::check())
+                    @if (Auth::user()->role == 'admin')
+                        <a href="{{ route('admin') }}">Dashboard Admin</a>
+                    @elseif (Auth::user()->role == 'user')
+                        <a href="{{ route('user') }}">Dashboard User</a>
+                    @endif
+                @else
+                    <a href="{{ route('auth') }}">Login</a>
+                @endif
+              </li>
             </ul>
           </div>
         </div>
@@ -351,9 +361,14 @@
                   </p>
 
                   <div class="business_btn">
-                    <a href="" class="btn btn-default m-top-20">Baca Selengkapnya</a>
-                    <a href="#login" class="btn btn-primary m-top-20"
-                      >Mulai Sekarang</a
+                    <a href="https://news.bsi.ac.id/" 
+                    class="btn btn-default m-top-20"
+                    target="_blank"
+                    >Baca Selengkapnya</a>
+                    <a href="https://www.bsi.ac.id/ubsi/visimisi" 
+                    class="btn btn-primary m-top-20"
+                    target="_blank"
+                    >Visi & Misi</a
                     >
                   </div>
                 </div>

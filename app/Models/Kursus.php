@@ -18,6 +18,7 @@ class Kursus extends Model
         'alamat',
         'alasan',
         'kursus',
-        'status'
+        'status',
+        'cv'
     ];
 }

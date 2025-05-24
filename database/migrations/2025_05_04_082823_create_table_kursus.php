@@ -20,7 +20,9 @@ return new class extends Migration
             $table->text('alasan');
             $table->enum('kursus',['cybersecurity','uiux']);
             $table->enum('status',['Ditinjau','Disetujui','Ditolak'])->default('Ditinjau');
+            $table->string('cv');
             $table->timestamps();
+            
         });
     }
 

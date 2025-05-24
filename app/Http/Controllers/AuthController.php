@@ -17,9 +17,10 @@ class AuthController extends Controller
 
     public function register(Request $request){
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+                'name' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6',
+                'image' => 'required|image|max:1024',
             ],[
                 'name.required' => 'Nama harus diisi',
                 'email.required' => 'Email harus diisi',
@@ -27,13 +28,24 @@ class AuthController extends Controller
                 'email.unique' => 'Email sudah terdaftar',
                 'password.required' => 'Password harus diisi',
                 'password.min' => 'Password minimal 6 karakter',
+                'image.required' => 'foto profil harus diisi',
+                'image.image' => 'foto profil harus berupa gambar',
+                'image.max' => 'ukuran foto profil maksimal 1MB'
             ]);
             
         try {
+
+            if($request->hasFile('image')){
+                $image = $request->file('image');
+                $imageName = time() . "_" . uniqid() . "." . $image->getClientOriginalExtension();
+                $image->move(public_path('images'),$imageName);
+            }
+
             $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'image' => $imageName
             ]);
 
             Notification::send($user, new VerifyEmail());
