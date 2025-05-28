@@ -91,3 +91,5 @@ Route::get('/auth/google/callback', function(){
 Route::view('/profile','profile-user')->name('profile');
 Route::view('/profile-admin','profile-admin')->name('profile-admin');
 Route::post('/profile',[UserController::class,'ubahProfile'])->name('ubahProfile');
+Route::get('/payment/{id}', [UserController::class, 'paymentPage'])->name('payment.page');
+Route::post('/midtrans/callback', [UserController::class, 'midtransCallback']);

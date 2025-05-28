@@ -19,6 +19,9 @@ class Kursus extends Model
         'alasan',
         'kursus',
         'status',
-        'cv'
+        'cv',
+        'status',
+        'snap_token',
+        'payment_status'
     ];
 }

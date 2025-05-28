@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Midtrans\Snap;
+use Midtrans\Config;
 use App\Models\Berita;
 use App\Models\Jadwal;
 use App\Models\Kursus;
@@ -11,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
+
 
 class UserController extends Controller
 {
@@ -196,14 +200,53 @@ class UserController extends Controller
             $cv->move(public_path('documents'), $cvName);
         }
 
-        Kursus::create([
+         // Konfigurasi Midtrans
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
+
+        $orderId = 'ORDER-' . time() . '-' . uniqid();
+
+        // Data transaksi
+        $params = [
+            'transaction_details' => [
+                'order_id' => $orderId,
+                'gross_amount' => 100000, // Ganti dengan jumlah yang sesuai
+            ],
+            'customer_details' => [
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ],
+            'payment_type' => 'bank_transfer',
+            'bank_transfer' => [
+                'bank' => 'bca'
+            ],
+        ];
+
+        
+
+        // Mendapatkan Snap Token
+        $snapToken = Snap::getSnapToken($params);
+        if (!$snapToken) {
+            Log::error('Gagal mendapatkan snap token dari Midtrans.',);
+            return back()->with('error', 'Gagal membuat transaksi, silakan coba lagi.');
+        }
+
+        $kursus = Kursus::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'alamat' => $request->alamat,
             'alasan' => $request->alasan,
             'kursus' => $request->kursus,
-            'cv' => $cvName
+            'cv' => $cvName,
+            'status' => 'Menunggu Pembayaran',
+            'snap_token' => $snapToken,
+            'order_id' => $orderId,
+            'payment_status' => 'Menunggu Pembayaran',
         ]);
 
         $currentWaktu = Carbon::now()->format('F j, Y');
@@ -214,7 +257,8 @@ class UserController extends Controller
             'pesan' => "Berhasil Mendaftar Kursus $request->kursus! Mohon tunggu persentujuan dari Admin. Terimakasih",
         ]);
 
-        return redirect()->route('user')->with('success', 'Berhasil mendaftar. Silakan cek pusat peringatan secara berkala!.');
+        return redirect()->route('payment.page', ['id' => $kursus->id]);
+        
     }
     function ubahProfile(Request $request) {
         $request->validate([
@@ -242,7 +286,7 @@ class UserController extends Controller
             $request->image->move(public_path('images'), $filename);
             $user->image = $filename;
         }
-
+        
         $user->save();
 
 
@@ -252,4 +296,22 @@ class UserController extends Controller
 
         return redirect()->route('admin')->with('success', 'Profile updated successfully.');
     }
+
+    public function paymentPage($id)
+    {
+        $kursus = Kursus::findOrFail($id);
+        return view('payment', ['snapToken' => $kursus->snap_token]);
+    }
+
+    public function midtransCallback(Request $request)
+{
+    $payload = $request->all();
+    Log::info('Callback Diterima:', $payload);
+
+    // Lanjutkan verifikasi signature_key jika perlu
+
+    // Update status pembayaran ke database
+    // Misal berdasarkan order_id
+}
+
 }
