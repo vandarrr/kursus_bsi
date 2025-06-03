@@ -411,7 +411,7 @@
             </button>
           </div>
           <div class="modal-body">
-            Pilih "Keluar" di bawah jika Anda siap mengakhiri sesi Anda saat ini.
+            Pilih "Logout" di bawah jika Anda siap mengakhiri sesi Anda saat ini.
           </div>
           <div class="modal-footer">
             <button
@@ -423,7 +423,7 @@
             </button>
             <form action="{{ route('logout') }}" method="POST" style="display: inline">
               @csrf
-              <button type="submit" class="btn btn-primary">Keluar</button>
+              <button type="submit" class="btn btn-primary">Logout</button>
             </form>
           </div>
         </div>

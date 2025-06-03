@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status',['Ditinjau','Disetujui','Ditolak'])->default('Ditinjau');
             $table->string('cv');
             $table->timestamps();
+            $table->string('payment_status')->default('Menunggu Pembayaran');
             
         });
     }

@@ -93,3 +93,11 @@ Route::view('/profile-admin','profile-admin')->name('profile-admin');
 Route::post('/profile',[UserController::class,'ubahProfile'])->name('ubahProfile');
 Route::get('/payment/{id}', [UserController::class, 'paymentPage'])->name('payment.page');
 Route::post('/midtrans/callback', [UserController::class, 'midtransCallback']);
+Route::get('/payment-success', [App\Http\Controllers\PaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment-pending', [App\Http\Controllers\PaymentController::class, 'pending'])->name('payment.pending');
+Route::get('/payment-failed', [App\Http\Controllers\PaymentController::class, 'failed'])->name('payment.failed');
+
+Route::get('/download-pendaftaran', function () {
+    $file = public_path('files/pendaftaran.pdf');
+    return response()->download($file);
+})->middleware('auth')->name('download.pendaftaran');

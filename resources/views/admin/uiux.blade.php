@@ -10,7 +10,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Dashboard Admin Kursus - Codeworshipper</title>
+    <title>Dashboard Admin Kursus - BSI</title>
 
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
 
@@ -268,6 +268,7 @@
                                     <th>Alamat</th>
                                     <th>Alasan</th>
                                     <th>Status</th>
+                                    <th>Status Pembayaran</th>
                                     <th>Dokumen</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -280,6 +281,7 @@
                                     <th>Alamat</th>
                                     <th>Alasan</th>
                                     <th>Status</th>
+                                    <th>Status Pembayaran</th>
                                     <th>Dokumen</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -293,6 +295,7 @@
                                     <td>{{ $uiux['alamat'] }}</td>
                                     <td>{{ $uiux['alasan'] }}</td>
                                     <td>{{ $uiux['status'] }}</td>
+                                    <td>{{ $uiux['payment_status'] ?? '-' }}</td>
                                     <td><a href="/documents/{{ $uiux['cv'] }}" target="_blank" rel="noopener noreferrer">Lihat Dokumen</a></td>
                                     @if($uiux->status == 'Disetujui')
                                     <td>
@@ -350,7 +353,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Bersiap untuk Keluar?</h5>
             <button
               class="close"
               type="button"
@@ -361,7 +364,7 @@
             </button>
           </div>
           <div class="modal-body">
-            Select "Logout" below if you are ready to end your current session.
+            Pilih "Logout" di bawah jika Anda siap mengakhiri sesi Anda saat ini.
           </div>
           <div class="modal-footer">
             <button

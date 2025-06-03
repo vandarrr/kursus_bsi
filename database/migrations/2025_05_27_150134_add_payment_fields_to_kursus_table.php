@@ -23,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('kursus', function (Blueprint $table) {
-            //
+            $table->dropColumn('snap_token');
+            $table->dropColumn('payment_status');
         });
     }
 };

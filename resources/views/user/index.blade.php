@@ -275,14 +275,20 @@
           </nav>
 
           <div class="container-fluid">
-
+            
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4"
             >
               <h1 class="h3 mb-0 text-gray-800">
               </h1>
             </div>
-
+            
+            <div class="mb-4 text-right">
+              <div class="col text-right"></div>
+                <a href="{{ route('download.pendaftaran') }}" class="btn btn-success">
+                  <i class="fas fa-download mr-1"></i> Download Dokumen Pendaftaran
+                </a>
+              </div>
             <div class="row">
               <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
@@ -425,7 +431,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Bersiap Untuk Keluar?</h5>
             <button
               class="close"
               type="button"

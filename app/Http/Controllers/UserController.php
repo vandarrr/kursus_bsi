@@ -243,7 +243,7 @@ class UserController extends Controller
             'alasan' => $request->alasan,
             'kursus' => $request->kursus,
             'cv' => $cvName,
-            'status' => 'Menunggu Pembayaran',
+            'status' => 'Ditinjau',
             'snap_token' => $snapToken,
             'order_id' => $orderId,
             'payment_status' => 'Menunggu Pembayaran',

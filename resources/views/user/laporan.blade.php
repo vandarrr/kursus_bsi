@@ -407,7 +407,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Bersiap Untuk Keluar?</h5>
             <button
               class="close"
               type="button"
@@ -418,7 +418,7 @@
             </button>
           </div>
           <div class="modal-body">
-            Select "Logout" below if you are ready to end your current session.
+            Pilih "Logout" di bawah jika Anda siap mengakhiri sesi Anda saat ini.
           </div>
           <div class="modal-footer">
             <button
